@@ -1,10 +1,7 @@
-hello farzin...
-you can start your project on Backend file...
+# Insta Dev
 
-and i hope you have a best project :D
+Django Rest Framework Project
 
+## Getting Started
 
-Good Bye.. 
-you can delete this file and start your project from now :)
-
-
+Be Easy I Dont Know How To Explain This Project
