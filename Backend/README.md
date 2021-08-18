@@ -1,7 +1,5 @@
-# Insta Dev
+# Insta Dev Back-End...
+  Its Just A Back-End Ok?? :)
 
-Django Rest Framework Project
-
-## Getting Started
-
-Be Easy I Dont Know How To Explain This Project
+## Requirements...
+  FastAPI :)
