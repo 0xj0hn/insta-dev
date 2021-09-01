@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
+  //visible or hide password
   var is_visible = false.obs;
   bool vd() {
     // is_visible = b.obs;
@@ -12,8 +13,9 @@ class Controller extends GetxController {
     }
   }
 
-  var widgets = List<Widget>().obs;
-  void add_widget(widgets, widget) {
-    widgets.value.add(widget);
+  //add widget
+  RxList<Widget> widgets = <Widget>[].obs;
+  void add_widget(widget) {
+    this.widgets.value.add(widget);
   }
 }

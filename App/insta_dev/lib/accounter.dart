@@ -57,10 +57,50 @@ class Accounter extends StatelessWidget {
           child: Icon(Icons.create),
           tooltip: "اضافه کردن",
           onPressed: () {
-            c.add_widget(c.widgets, Text("SSSS"));
+            c.widgets.add(ViewAccount());
           },
         ),
       ),
+    );
+  }
+}
+
+class ViewAccount extends StatelessWidget {
+  int id;
+  ViewAccount({this.id});
+  Controller c = Get.find();
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_right, color: Colors.teal),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.teal, size: 16),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red, size: 16),
+                    onPressed: () {
+                      c.widgets.removeLast();
+                    },
+                    tooltip: "حذف اکانت",
+                  ),
+                ],
+              ),
+            ],
+          )
+
+          //Text('asd\nads\nasd\n'),
+          ),
     );
   }
 }

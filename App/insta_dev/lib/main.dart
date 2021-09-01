@@ -15,40 +15,40 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainPage(),
+      home: Home(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MainPage extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    Controller c = Get.put(Controller());
+  Widget build(context) {
+    // Instantiate your class using Get.put() to make it available for all "child" routes there.
+    final Controller c = Get.put(Controller());
+
     return Scaffold(
+      // Use Obx(()=> to update Text() whenever count is changed.
       appBar: AppBar(
-        title: Text("Insta Dev"),
+        title: Obx(
+          () => Text("Clicks: ${c.widgets}"),
+        ),
       ),
-      body: Center(
+      body: Container(
         child: Padding(
-          padding: EdgeInsets.all(30),
-          child: Text(
-            c.widgets.value.toString(),
+          padding: EdgeInsets.all(100),
+          child: Obx(
+            () => ListView(
+              children: c.widgets,
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => Accounter(),
-          //   ),
-          // );
           Get.to(() => Accounter());
         },
-        tooltip: "اضافه کردن اکانت",
       ),
     );
   }
