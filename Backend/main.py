@@ -28,3 +28,10 @@ def save(ids: str , username: str , password: str) :
     res = core.Save(ids , username , password)
     return res
 #-----------------------------------------------
+
+#Hashtag Like And Save...
+@app.get('/posts/likesave/{ids},{username},{password}')
+def save(ids: str , username: str , password: str) :
+    res = core.LikeSave(ids , username , password)
+    return res
+#-----------------------------------------------

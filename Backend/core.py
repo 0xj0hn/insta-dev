@@ -46,3 +46,21 @@ def Save(ids , user , passw) :
             errors.append(i)
     result = [oks , errors]
     return result
+
+#Like & Save 
+def LikeSave(ids , user , passw) :
+    app = Client(user , passw)
+    oks = []
+    errors = []
+    sleep(2)
+    ids = ids.split(',')
+    for i in ids :
+        try :
+            res = app.save_photo(i)
+            sleep(5)
+            res2 = app.post_like(i)
+            oks.append(i)
+        except :
+            errors.append(i)
+    result = [oks , errors]
+    return result
