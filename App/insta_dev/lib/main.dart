@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
+
   runApp(MyApp());
 }
 
@@ -12,9 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Insta Dev',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeX.darkTheme,
       home: Home(),
       debugShowCheckedModeBanner: false,
     );
@@ -30,22 +31,33 @@ class Home extends StatelessWidget {
     return Scaffold(
       // Use Obx(()=> to update Text() whenever count is changed.
       appBar: AppBar(
-        title: Obx(
-          () => Text("Clicks: ${c.widgets}"),
+        title: Text(
+          "InstaDev",
+          style: TextStyle(fontWeight: FontWeight.w300),
         ),
       ),
       body: Container(
         child: Padding(
-          padding: EdgeInsets.all(100),
+          padding: EdgeInsets.all(10),
           child: Obx(
             () => ListView(
-              children: c.widgets,
+              children: c.widgets == null
+                  ? [
+                      Center(
+                        child: Text(
+                          "اکانتی موجود نیست!",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ]
+                  : c.widgets,
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        tooltip: "اضافه کردن اکانت",
         onPressed: () {
           Get.to(() => Accounter());
         },
