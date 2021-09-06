@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
+
   runApp(MyApp());
 }
 
@@ -12,43 +15,52 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Insta Dev',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MainPage(),
+      theme: ThemeX.darkTheme,
+      home: Home(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MainPage extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    Controller c = Get.put(Controller());
+  Widget build(context) {
+    // Instantiate your class using Get.put() to make it available for all "child" routes there.
+    final Controller c = Get.put(Controller());
+
     return Scaffold(
+      // Use Obx(()=> to update Text() whenever count is changed.
       appBar: AppBar(
-        title: Text("Insta Dev"),
+        title: Text(
+          "InstaDev",
+          style: TextStyle(fontWeight: FontWeight.w300),
+        ),
       ),
-      body: Center(
+      body: Container(
         child: Padding(
-          padding: EdgeInsets.all(30),
-          child: Text(
-            c.widgets.value.toString(),
+          padding: EdgeInsets.all(10),
+          child: Obx(
+            () => ListView(
+              children: c.widgets == null
+                  ? [
+                      Center(
+                        child: Text(
+                          "اکانتی موجود نیست!",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ]
+                  : c.widgets,
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        tooltip: "اضافه کردن اکانت",
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => Accounter(),
-          //   ),
-          // );
           Get.to(() => Accounter());
         },
-        tooltip: "اضافه کردن اکانت",
       ),
     );
   }
