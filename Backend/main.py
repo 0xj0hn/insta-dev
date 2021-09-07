@@ -14,7 +14,7 @@ async def HInfo(tag: str , username: str , password: str) :
         res = core.HInfo(tag , username , password)
         return res
     except Exception as e :
-        raise HTTPException(status_code=404, detail=e)
+        return e
 #----------------------------------------------
 
 #Hashtag Like...
@@ -24,7 +24,7 @@ async def Like(ids: str , username: str , password: str) :
         res = core.Like(ids , username , password)
         return res
     except Exception as e :
-        raise HTTPException(status_code=404, detail=e)
+        return e
 #-----------------------------------------------
 
 #Hashtag Like...
@@ -34,7 +34,7 @@ async def save(ids: str , username: str , password: str) :
         res = core.Save(ids , username , password)
         return res
     except Exception as e :
-        raise HTTPException(status_code=404, detail=e)
+        return e
 #-----------------------------------------------
 
 #Hashtag Like And Save...
@@ -44,5 +44,5 @@ async def save(ids: str , username: str , password: str) :
         res = core.LikeSave(ids , username , password)
         return res
     except Exception as e :
-        raise HTTPException(status_code=404, detail=e)
+        return e
 #-----------------------------------------------
