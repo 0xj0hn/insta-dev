@@ -23,8 +23,8 @@ async def Like(ids: str , username: str , password: str) :
     try :
         res = core.Like(ids , username , password)
         return res
-    except :
-        raise HTTPException(status_code=404, detail="error, maybe your given informations are incorrect")
+    except Exception as e :
+        raise HTTPException(status_code=404, detail=e)
 #-----------------------------------------------
 
 #Hashtag Like...
@@ -33,8 +33,8 @@ async def save(ids: str , username: str , password: str) :
     try :
         res = core.Save(ids , username , password)
         return res
-    except :
-        raise HTTPException(status_code=404, detail="error, maybe your given informations are incorrect")
+    except Exception as e :
+        raise HTTPException(status_code=404, detail=e)
 #-----------------------------------------------
 
 #Hashtag Like And Save...
@@ -43,6 +43,6 @@ async def save(ids: str , username: str , password: str) :
     try :
         res = core.LikeSave(ids , username , password)
         return res
-    except :
-        raise HTTPException(status_code=404, detail="error, maybe your given informations are incorrect")
+    except Exception as e :
+        raise HTTPException(status_code=404, detail=e)
 #-----------------------------------------------
