@@ -1,6 +1,7 @@
 #Imports...
 from instagram_private_api import Client
 from time import sleep
+import instaloader
 
 #Lets Code...
 
@@ -8,12 +9,15 @@ from time import sleep
 
 #Hashtag Like...
 def HInfo(Tag , user , passw) :
-    app = Client(user , passw)
+    app = instaloader.Instaloader()
+    app.login(user , passw)
+    res = []
     sleep(2)
-    uuid = app.generate_uuid()
+    tag = instaloader.Hashtag.from_name(app.context,Tag)
     sleep(2)
-    tag = app.feed_tag(tag=Tag , rank_token=uuid)
-    return tag
+    for i in tag.get_all_posts() :
+        res.append(i.mediaid)
+    return res
 
 #Like
 def Like(ids , user , passw) :

@@ -1,3 +1,4 @@
 instagram_private_api
 fastapi
 uvicorn
+instaloader
