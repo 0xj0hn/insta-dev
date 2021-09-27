@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Insta Dev',
       theme: ThemeX.darkTheme,
       home: Home(),
+      locale: Locale('fa', 'IR'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -29,39 +30,37 @@ class Home extends StatelessWidget {
     final Controller c = Get.put(Controller());
 
     return Scaffold(
-      // Use Obx(()=> to update Text() whenever count is changed.
-      appBar: AppBar(
-        title: Text(
-          "InstaDev",
-          style: TextStyle(fontWeight: FontWeight.w300),
+        // Use Obx(()=> to update Text() whenever count is changed.
+        appBar: AppBar(
+          title: Text(
+            "InstaDev",
+            style: TextStyle(fontWeight: FontWeight.w300),
+          ),
         ),
-      ),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Obx(
-            () => ListView(
-              children: c.widgets == null
-                  ? [
-                      Center(
-                        child: Text(
-                          "اکانتی موجود نیست!",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ]
-                  : c.widgets,
+        body: Container(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Obx(
+              () => ListView(
+                children: c.widgets,
+              ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        tooltip: "اضافه کردن اکانت",
-        onPressed: () {
-          Get.to(() => Accounter());
-        },
-      ),
-    );
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 30),
+              child: FloatingActionButton(
+                child: Icon(Icons.add),
+                tooltip: "اضافه کردن اکانت",
+                onPressed: () {
+                  Get.to(() => Accounter());
+                },
+              ),
+            )
+          ],
+        ));
   }
 }

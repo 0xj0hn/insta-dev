@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.insta_dev">
    <application
-        android:label="insta_dev"
-        android:icon="@mipmap/ic_launcher">
+        android:label="InstaDev"
+        android:icon="@mipmap/image">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,4 +38,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

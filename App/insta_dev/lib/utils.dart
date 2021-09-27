@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 
 class Controller extends GetxController {
@@ -17,6 +19,28 @@ class Controller extends GetxController {
 
   //add widget
   RxList<Widget> widgets = <Widget>[].obs;
+}
+
+class RequestFunctions {
+  static hashtag_info(username, password, hashtag) async {
+    var r = await http.get(
+      Uri.parse(
+        "http://127.0.0.1:8000/tag/info/$hashtag,$username,$password",
+      ),
+    );
+
+    return r;
+  }
+
+  static likesave(ids, username, password) async {
+    var r = await http.get(
+      Uri.parse(
+        "http://127.0.0.1:8000/posts/likesave/$ids,$username,$password",
+      ),
+    );
+
+    return r;
+  }
 }
 
 class ThemeX {
