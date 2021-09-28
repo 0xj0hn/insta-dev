@@ -8,15 +8,16 @@ import instaloader
 
 
 #Hashtag Like...
-def HInfo(Tag , user , passw) :
+def HInfo(Tag) :
     app = instaloader.Instaloader()
-    app.login(user , passw)
+#    app.login(user , passw)
     res = []
     sleep(2)
     tag = instaloader.Hashtag.from_name(app.context,Tag)
     sleep(2)
-    for i in tag.get_all_posts() :
-        res.append(i.mediaid)
+    tagall = tag.get_all_posts()
+    for i in tagall :
+       res.append(i.mediaid)
     return res
 
 #Like
