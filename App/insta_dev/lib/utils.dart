@@ -48,6 +48,9 @@ class ThemeX {
     primaryColor: Colors.amber,
     primarySwatch: Colors.amber,
     appBarTheme: AppBarTheme(
+      textTheme: TextTheme(
+        bodyText1: TextStyle(fontSize: 14, color: Colors.red),
+      ),
       backgroundColor: Colors.black,
       elevation: 5.0,
       centerTitle: true,
@@ -60,7 +63,7 @@ class ThemeX {
     ),
     primaryColorDark: Colors.black,
     fontFamily: 'Vazir',
-    accentTextTheme: TextTheme(body1: TextStyle(fontSize: 14)),
+    accentTextTheme: TextTheme(bodyText1: TextStyle(fontSize: 14)),
     buttonColor: Colors.amber,
     dividerColor: Colors.grey,
     textTheme: TextTheme(button: TextStyle(fontSize: 14)),
