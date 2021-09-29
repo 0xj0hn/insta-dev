@@ -8,9 +8,9 @@ import instaloader
 
 
 #Hashtag Like...
-def HInfo(Tag) :
+def HInfo(Tag , user , passw) :
     app = instaloader.Instaloader()
-#    app.login(user , passw)
+    app.login(user , passw)
     res = []
     sleep(2)
     tag = instaloader.Hashtag.from_name(app.context,Tag)
