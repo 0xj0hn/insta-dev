@@ -25,7 +25,7 @@ class RequestFunctions {
   static hashtag_info(username, password, hashtag) async {
     var r = await http.get(
       Uri.parse(
-        "http://127.0.0.1:8000/tag/info/$hashtag,$username,$password",
+        "http://127.0.0.1:8000/tag/info/$hashtag",
       ),
     );
 

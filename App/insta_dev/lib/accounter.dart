@@ -196,13 +196,13 @@ class ViewAccount extends StatelessWidget {
                     tooltip: "اجرای دستور",
                     onPressed: () async {
                       var req;
+                      Get.snackbar("وضعیت", "لطفا منتظر بمانید");
                       try {
                         req = await RequestFunctions.hashtag_info(
                           username,
                           password,
                           hashtag,
                         );
-                        Get.snackbar("وضعیت", "لطفا منتظر بمانید");
                       } catch (e) {
                         Get.snackbar("وضعیت", "خطا در برقراری ارتباط با سرور");
                       }
