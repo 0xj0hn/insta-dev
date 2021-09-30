@@ -5,20 +5,31 @@ import instaloader
 
 #Lets Code...
 
+#InstaLoader Login...
+def Login(user , passw) :
+    try :
+        app = instaloader.Instaloader()
+        app.login(user , passw)
+        res = app.save_session_to_file(user)
+    except Exception as e :
+        return e
 
 
 #Hashtag Like...
-def HInfo(Tag , user , passw) :
-    app = instaloader.Instaloader()
-    app.login(user , passw)
-    res = []
-    sleep(2)
-    tag = instaloader.Hashtag.from_name(app.context,Tag)
-    sleep(2)
-    tagall = tag.get_all_posts()
-    for i in tagall :
-       res.append(i.mediaid)
-    return res
+def HInfo(Tag , user) :
+    try :
+        app = instaloader.Instaloader()
+        app.load_session_from_file(user,user)
+        res = []
+        sleep(2)
+        tag = instaloader.Hashtag.from_name(app.context,Tag)
+        sleep(2)
+        tagall = tag.get_all_posts()
+        for i in tagall :
+            res.append(i.mediaid)
+        return res
+    except Exception as e:
+        return e
 
 #Like
 def Like(ids , user , passw) :

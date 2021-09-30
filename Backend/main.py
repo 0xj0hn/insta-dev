@@ -7,11 +7,21 @@ app = FastAPI()
 
 #Lets Code...
 
-#Hashtag Info...
-@app.get('/tag/info/{tag},{username},{password}')
+#Login
+@app.get('/login/loader/{username},{password}')
 async def HInfo(tag: str , username: str , password: str) :
     try :
-        res = core.HInfo(tag , username , password)
+        res = core.Login(username , password)
+        return res
+    except Exception as e :
+        return e
+
+
+#Hashtag Info...
+@app.get('/tag/info/{tag},{user}')
+async def HInfo(tag: str , user: str) :
+    try :
+        res = core.HInfo(tag,user)
         return res
     except Exception as e :
         return e
