@@ -22,6 +22,12 @@ class Controller extends GetxController {
 }
 
 class RequestFunctions {
+  static login(username, password) async {
+    var r = await http.get(
+      Uri.parse("http://localhost:8000/loader/$username,$password"),
+    );
+  }
+
   static hashtag_info(username, password, hashtag) async {
     var r = await http.get(
       Uri.parse(
