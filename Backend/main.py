@@ -18,7 +18,7 @@ async def HInfo(username: str , password: str) :
 
 
 #Hashtag Info...
-@app.get('/tag/info/{tag},{user},{passw}')
+@app.get('/tag/info/{tag}')
 async def HInfo(tag: str) :
     try :
         res = core.HInfo(tag)
