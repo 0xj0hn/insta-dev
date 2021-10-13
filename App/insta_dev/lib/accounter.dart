@@ -199,8 +199,6 @@ class ViewAccount extends StatelessWidget {
                       Get.snackbar("وضعیت", "لطفا منتظر بمانید");
                       try {
                         req = await RequestFunctions.hashtag_info(
-                          username,
-                          password,
                           hashtag,
                         );
                       } catch (e) {

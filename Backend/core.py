@@ -16,10 +16,11 @@ def Login(user , passw) :
 
 
 #Hashtag Like...
-def HInfo(Tag , user) :
+def HInfo(Tag) :
     try :
         app = instaloader.Instaloader()
-        app.load_session_from_file(user,user)
+        #app.load_session_from_file(user,user)
+        #app.login(user,passw)
         res = []
         sleep(2)
         tag = instaloader.Hashtag.from_name(app.context,Tag)

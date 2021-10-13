@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
-import 'package:get_storage/get_storage.dart';
 
 void main() async {
-  await GetStorage.init();
-
+  await Hive.initFlutter();
+  await Hive.openBox("accounts");
   runApp(MyApp());
 }
 
