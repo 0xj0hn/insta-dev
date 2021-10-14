@@ -10,7 +10,7 @@ def Login(user , passw) :
     try :
         app = instaloader.Instaloader()
         app.login(user , passw)
-        res = app.save_session_to_file(user)
+        #res = app.save_session_to_file(user)
     except Exception as e :
         return e
 
