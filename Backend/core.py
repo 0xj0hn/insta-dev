@@ -74,8 +74,9 @@ def LikeSave(ids , user , passw) :
     for i in ids :
         try :
             res = app.save_photo(i)
-            sleep(5)
+            sleep(2.5)
             res2 = app.post_like(i)
+            sleep(2.5)
             oks.append(i)
         except :
             errors.append(i)
