@@ -3,10 +3,14 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox("accounts");
+  // await Controller.flutterLocalNotificationsPlugin.initialize(
+  //   Controller.initializationSettings,
+  // );
   runApp(MyApp());
 }
 

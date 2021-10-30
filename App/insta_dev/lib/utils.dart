@@ -4,9 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Controller extends GetxController {
   //visible or hide password
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  static AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('image');
+  static LinuxInitializationSettings linuxInitializationSettings =
+      LinuxInitializationSettings(defaultActionName: "Test");
+  static final InitializationSettings initializationSettings =
+      InitializationSettings(
+    android: initializationSettingsAndroid,
+    linux: linuxInitializationSettings,
+  );
+
+  static const androidPlatformChannelSpecifics =
+      AndroidNotificationDetails("1", "test");
+
+  static NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
   final mybox = Hive.box("accounts");
   var is_visible = false.obs;
   bool vd() {

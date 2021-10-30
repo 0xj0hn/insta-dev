@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:insta_dev/change_information.dart';
 import 'utils.dart';
 import 'dart:io';
+import "package:flutter_local_notifications/flutter_local_notifications.dart";
 //var is_visible = false.obs;
 
 class Accounter extends StatelessWidget {
@@ -210,38 +211,46 @@ class ViewAccount extends StatelessWidget {
                         return -1;
                       }
 
-                      var response = jsonDecode(req.body);
+                      List response = jsonDecode(req.body);
 
                       Get.defaultDialog(
                         title: "هشتگ $hashtag",
                         middleText:
-                            "تعداد پست ها: ${response["num_results"].toString()}",
+                            "تعداد پست ها: ${response.length.toString()}\nزمان تقریبی: " +
+                                (response.length * 4).toString() +
+                                " ثانیه",
                         textConfirm: "شروع!",
                         textCancel: "بیخیال!",
                         onConfirm: () async {
                           String ids = "";
-                          print(response);
-
-                          if (response["ranked_items"] == null) {
-                            for (int i = 0; i < response["num_results"]; i++) {
-                              if (i == 0) {
-                                ids += response["items"][i]["id"].toString();
-                              } else {
-                                ids +=
-                                    "," + response["items"][i]["id"].toString();
-                              }
-                            }
-                          } else {
-                            for (int i = 0;
-                                i < response["ranked_items"].length;
-                                i++) {
-                              if (i == 0) {
-                                ids += response["ranked_items"][i]["id"];
-                              } else {
-                                ids += "," + response["ranked_items"][i]["id"];
-                              }
+                          for (int i = 0; i < response.length; i++) {
+                            if (i == 0) {
+                              ids += response[i].toString();
+                            } else {
+                              ids += "," + response[i].toString();
                             }
                           }
+// mohammad_mahdii_bonyadi / mhdmhdmhd82
+                          // if (response["ranked_items"] == null) {
+                          //   for (int i = 0; i < response["num_results"]; i++) {
+                          //     if (i == 0) {
+                          //       ids += response["items"][i]["id"].toString();
+                          //     } else {
+                          //       ids +=
+                          //           "," + response["items"][i]["id"].toString();
+                          //     }
+                          //   }
+                          // } else {
+                          //   for (int i = 0;
+                          //       i < response["ranked_items"].length;
+                          //       i++) {
+                          //     if (i == 0) {
+                          //       ids += response["ranked_items"][i]["id"];
+                          //     } else {
+                          //       ids += "," + response["ranked_items"][i]["id"];
+                          //     }
+                          //   }
+                          // } the algorithm changed!
 
                           print(ids);
                           Get.back();
@@ -256,7 +265,20 @@ class ViewAccount extends StatelessWidget {
                             password,
                           );
                           var res = jsonDecode(req.body);
+                          // const androidPlatformChannelSpecifics =
+                          //     AndroidNotificationDetails("1", "test");
 
+                          // const NotificationDetails platformChannelSpecifics =
+                          //     NotificationDetails(
+                          //         android: androidPlatformChannelSpecifics);
+
+                          // await Controller.flutterLocalNotificationsPlugin.show(
+                          //   0,
+                          //   'وضعیت',
+                          //   'اکانت' + username + " انجام شد.",
+                          //   platformChannelSpecifics,
+                          //   payload: 'item x',
+                          // ); TODO: these lines are for start notification!
                           Get.snackbar(
                             "وضعیت",
                             "لایک و سیو انجام شد" +
