@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:insta_dev/accounter.dart';
 
 class Controller extends GetxController {
   //visible or hide password
@@ -17,7 +18,6 @@ class Controller extends GetxController {
   static final InitializationSettings initializationSettings =
       InitializationSettings(
     android: initializationSettingsAndroid,
-    linux: linuxInitializationSettings,
   );
 
   static const androidPlatformChannelSpecifics =
@@ -52,7 +52,12 @@ class Controller extends GetxController {
   }
 
   //add widget
-  RxList<Widget> widgets = <Widget>[].obs;
+  RxList<ViewAccount> widgets = <ViewAccount>[].obs;
+  add(addVar) {
+    widgets.add(addVar);
+  }
+
+  //flutter: [{username: shams, id: 332334729, password: 13821382, type: هشتگ, hashtag: test}]
 }
 
 class RequestFunctions {

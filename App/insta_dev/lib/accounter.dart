@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:math';
+import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_dev/change_information.dart';
@@ -141,15 +142,43 @@ class Accounter extends StatelessWidget {
           tooltip: "اضافه کردن",
           onPressed: () {
             print(usernameC.value.text);
-            c.widgets.add(
+            // c.widgets.add(
+            //   ViewAccount(
+            //     id: c.widgets.length,
+            //     username: usernameC.value.text,
+            //     password: passwordC.value.text,
+            //     type: choice.value == 1 ? "فالور" : "هشتگ",
+            //     hashtag: hashtagCo.value.text,
+            //   ),
+            // );
+
+            var box = Hive.box("accounts");
+            var id = Random.secure().nextInt(1000000000);
+            Map saving = {
+              "username": usernameC.value.text,
+              "id": Random.secure().nextInt(1000000000),
+              "password": passwordC.value.text,
+              "type": choice.value == 1 ? 'فالور' : 'هشتگ',
+              "hashtag": hashtagCo.value.text,
+            };
+            List database_accounts =
+                Hive.box("accounts").get("accounts") == null
+                    ? []
+                    : Hive.box("accounts").get("accounts");
+            database_accounts.add(saving);
+            box.put("accounts", database_accounts);
+            c.add(
               ViewAccount(
-                id: c.widgets.length,
                 username: usernameC.value.text,
+                id: id,
                 password: passwordC.value.text,
-                type: choice.value == 1 ? "فالور" : "هشتگ",
+                type: choice.value != 1 ? 'هشتگ' : 'فالور',
                 hashtag: hashtagCo.value.text,
               ),
             );
+            //TODO: IM REALLY HERE!
+
+            print(box.get("accounts"));
             Get.back();
             Get.snackbar("وضعیت", "با موفقیت پیج اضافه شد!");
           },
@@ -308,11 +337,8 @@ class ViewAccount extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.delete, color: Colors.red, size: 16),
                     onPressed: () {
-                      if (c.widgets.length == 1) {
-                        c.widgets.removeLast();
-                        return 0;
-                      }
-                      c.widgets.removeAt(id);
+                      c.widgets.removeWhere((item) => item.id == id);
+
                       print(id);
                     },
                     tooltip: "حذف اکانت",
