@@ -51,7 +51,7 @@ async def save(ids: str , username: str , password: str) :
 @app.get('/posts/likesave/{ids},{username},{password}')
 async def save(ids: str , username: str , password: str) :
     try :
-        res = core.LikeSave(ids , username , password)
+        res = await core.LikeSave(ids , username , password)
         return res
     except Exception as e :
         return e
