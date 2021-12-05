@@ -104,7 +104,7 @@ class ThemeX {
       color: Colors.amber,
     ),
     primaryTextTheme: TextTheme(
-      headline6: TextStyle(color: Colors.amber),
+      headline6: TextStyle(color: Colors.amber, fontWeight: FontWeight.w300),
     ),
     primaryColorDark: Colors.black,
     fontFamily: 'Vazir',

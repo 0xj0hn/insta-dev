@@ -36,15 +36,34 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            "InstaDev",
-            style: TextStyle(fontWeight: FontWeight.w300),
+            "اینستا دِو",
+            style: TextStyle(fontWeight: FontWeight.w300, color: Colors.amber),
           ),
           actions: [
             PopupMenuButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.amber,
+              ),
+              onSelected: (res) {
+                if (res == 0) {
+                  Get.to(() => ChooseHashtagPage());
+                } else {
+                  c.widgets.removeRange(0, c.widgets.length);
+                }
+              },
               itemBuilder: (ctx) => [
                 PopupMenuItem(
+                  value: 0,
                   child: Text(
                     "انتخاب هشتگ...",
+                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 1,
+                  child: Text(
+                    "پاک کردن تمام اکانت‌ها",
                     style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
                   ),
                 ),

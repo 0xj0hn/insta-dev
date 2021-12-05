@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,9 +22,12 @@ class Accounter extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("ساخت اکانت"),
+          title: Text(
+            "ساخت اکانت",
+            style: TextStyle(color: Colors.amber, fontWeight: FontWeight.w300),
+          ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_outlined, color: Colors.amber),
+            icon: Icon(Icons.arrow_back_rounded, color: Colors.amber),
             tooltip: "بازگشت",
             onPressed: () {
               Get.back();
@@ -75,8 +79,9 @@ class Accounter extends StatelessWidget {
                     // ),
                     prefixIcon: Obx(
                       () => IconButton(
-                          icon: Icon(
-                              c.is_visible.value ? Icons.shield : Icons.lock),
+                          icon: Icon(c.is_visible.value
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                           onPressed: () {
                             c.vd();
                           },
@@ -141,7 +146,6 @@ class Accounter extends StatelessWidget {
           child: Icon(Icons.create),
           tooltip: "اضافه کردن",
           onPressed: () {
-            print(usernameC.value.text);
             // c.widgets.add(
             //   ViewAccount(
             //     id: c.widgets.length,
@@ -154,19 +158,6 @@ class Accounter extends StatelessWidget {
 
             var box = Hive.box("accounts");
             var id = Random.secure().nextInt(1000000000);
-            Map saving = {
-              "username": usernameC.value.text,
-              "id": Random.secure().nextInt(1000000000),
-              "password": passwordC.value.text,
-              "type": choice.value == 1 ? 'فالور' : 'هشتگ',
-              "hashtag": hashtagCo.value.text,
-            };
-            List database_accounts =
-                Hive.box("accounts").get("accounts") == null
-                    ? []
-                    : Hive.box("accounts").get("accounts");
-            database_accounts.add(saving);
-            box.put("accounts", database_accounts);
             c.add(
               ViewAccount(
                 username: usernameC.value.text,
