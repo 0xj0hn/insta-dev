@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:insta_dev/notification_services.dart';
 import 'package:insta_dev/page/choose_hashtag.dart';
+import 'package:insta_dev/page/config.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -20,7 +21,9 @@ void main() async {
         android: NotificationService.androidPlatformChannelSpecifics),
   );
   await Hive.initFlutter();
+
   await Hive.openBox("accounts");
+  await Hive.openBox("configs");
   // await Controller.flutterLocalNotificationsPlugin.initialize(
   //   Controller.initializationSettings,
   // );
@@ -61,23 +64,55 @@ class Home extends StatelessWidget {
               onSelected: (res) {
                 if (res == 0) {
                   Get.to(() => ChooseHashtagPage());
-                } else {
+                } else if (res == 1) {
                   c.widgets.removeRange(0, c.widgets.length);
+                } else if (res == 2) {
+                  Get.to(() => ConfigServerPage());
                 }
               },
               itemBuilder: (ctx) => [
                 PopupMenuItem(
                   value: 0,
-                  child: Text(
-                    "انتخاب هشتگ...",
-                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "انتخاب هشتگ...",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300, fontSize: 14),
+                      ),
+                      Icon(Icons.check_outlined),
+                    ],
                   ),
                 ),
                 PopupMenuItem(
                   value: 1,
-                  child: Text(
-                    "پاک کردن تمام اکانت‌ها",
-                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "پاک کردن تمام اکانت‌ها",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Icon(Icons.delete),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "پیکربندی سرور",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300, fontSize: 14),
+                      ),
+                      Icon(Icons.settings),
+                    ],
                   ),
                 ),
               ],

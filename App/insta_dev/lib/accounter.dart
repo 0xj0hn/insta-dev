@@ -229,12 +229,24 @@ class Accounter extends StatelessWidget {
 
             var box = Hive.box("accounts");
             var id = Random.secure().nextInt(1000000000);
+            var type = "";
+            if (choice.value == 0) {
+              type = "هشتگ";
+            } else if (choice.value == 1) {
+              type = "تگ";
+            } else if (choice.value == 2) {
+              type = "فالوئر";
+            } else if (choice.value == 3) {
+              type = "آنفالو";
+            } else if (choice.value == 4) {
+              type = "آخرین پست";
+            }
             c.add(
               ViewAccount(
                 username: usernameC.value.text,
                 id: id,
                 password: passwordC.value.text,
-                type: choice.value != 1 ? 'هشتگ' : 'فالور',
+                type: type,
                 hashtag: hashtagCo.value.text,
               ),
             );

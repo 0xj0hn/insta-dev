@@ -12,7 +12,7 @@ class NotificationService {
     importance: Importance.max,
     priority: Priority.high,
     ticker: 'ticker',
-    color: Colors.amber,
+    color: Colors.red,
   );
   static NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);

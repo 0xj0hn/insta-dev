@@ -62,15 +62,17 @@ class Controller extends GetxController {
 
 class RequestFunctions {
   static login(username, password) async {
+    var hostname = Hive.box("configs").get("url");
     var r = await http.get(
-      Uri.parse("http://localhost:8000/loader/$username,$password"),
+      Uri.parse("$hostname/loader/$username,$password"),
     );
   }
 
   static hashtag_info(hashtag) async {
+    var hostname = Hive.box("configs").get("url");
     var r = await http.get(
       Uri.parse(
-        "http://127.0.0.1:8000/tag/info/$hashtag",
+        "$hostname/tag/info/$hashtag",
       ),
     );
 
@@ -78,9 +80,10 @@ class RequestFunctions {
   }
 
   static likesave(ids, username, password) async {
+    var hostname = Hive.box("configs").get("url");
     var r = await http.get(
       Uri.parse(
-        "http://127.0.0.1:8000/posts/likesave/$ids,$username,$password",
+        "$hostname/posts/likesave/$ids,$username,$password",
       ),
     );
 
