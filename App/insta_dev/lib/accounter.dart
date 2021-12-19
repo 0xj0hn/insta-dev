@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_dev/change_information.dart';
+import 'package:insta_dev/notification_services.dart';
 import 'utils.dart';
 import 'dart:io';
 import "package:flutter_local_notifications/flutter_local_notifications.dart";
@@ -18,6 +19,24 @@ class Accounter extends StatelessWidget {
     final passwordC = TextEditingController().obs;
     final hashtagCo = TextEditingController().obs;
     var choice = 0.obs;
+    RxList<String> choices(choice) {
+      RxList<String> val = <String>["", ""].obs;
+      if (choice == 0) {
+        val[0] = "هشتگ";
+        val[1] = "هشتگ را وارد کنید.";
+      } else if (choice == 1) {
+        val[0] = "تگ";
+        val[1] = "ايدی اکانت مورد نظر را وارد کنید.";
+      } else if (choice == 2) {
+        val[0] = "فالوئر";
+        val[1] = "اکانت مورد نظر را وارد کنید.";
+      } else if (choice == 3) {
+        val[0] = "آنفالو";
+        val[1] = "اکانت مورد نظر را وارد کنید.";
+      }
+      return val;
+    }
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -38,17 +57,19 @@ class Accounter extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(35),
-              child: TextField(
-                cursorWidth: 1,
-                style: TextStyle(fontSize: 14),
-                controller: usernameC.value,
-                textDirection: TextDirection.ltr,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: "نام کاربری اینستاگرام",
-                  hintText: "نام کاربری اینستاگرام اکانت را وارد کنید...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              child: Obx(
+                () => TextField(
+                  cursorWidth: 1,
+                  style: TextStyle(fontSize: 14),
+                  controller: usernameC.value,
+                  textDirection: TextDirection.ltr,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: "نام کاربری شما",
+                    hintText: "نام کاربری اکانت خود را وارد کنید...",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -64,8 +85,8 @@ class Accounter extends StatelessWidget {
                   obscureText: c.is_visible.value ? false : true,
                   textDirection: TextDirection.ltr,
                   decoration: InputDecoration(
-                    labelText: "گذرواژه اینستاگرام",
-                    hintText: "گذرواژه اینستاگرام اکانت را وارد کنید...",
+                    labelText: "گذرواژه شما",
+                    hintText: "گذرواژه خود را وارد کنید...",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -93,17 +114,19 @@ class Accounter extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(35),
-              child: TextField(
-                cursorWidth: 1,
-                style: TextStyle(fontSize: 14),
-                controller: hashtagCo.value,
-                textDirection: TextDirection.ltr,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: "هشتگ",
-                  hintText: "هشتگ اینستاگرام اکانت را وارد کنید...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              child: Obx(
+                () => TextField(
+                  cursorWidth: 1,
+                  style: TextStyle(fontSize: 14),
+                  controller: hashtagCo.value,
+                  textDirection: TextDirection.ltr,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: choices(choice.value)[0],
+                    hintText: choices(choice.value)[1],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -125,12 +148,60 @@ class Accounter extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 50, right: 50),
+              padding: EdgeInsets.only(left: 50, right: 50, top: 5, bottom: 5),
               child: ListTile(
-                title: Text("فالور"),
+                title: Text("تگ"),
                 leading: Obx(
                   () => Radio(
+                    activeColor: Colors.amber,
                     value: 1,
+                    groupValue: choice.value,
+                    onChanged: (i) {
+                      choice.value = i;
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: ListTile(
+                title: Text("فالوئر"),
+                leading: Obx(
+                  () => Radio(
+                    value: 2,
+                    groupValue: choice.value,
+                    activeColor: Colors.amber,
+                    onChanged: (i) {
+                      choice.value = i;
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: ListTile(
+                title: Text("آنفالو"),
+                leading: Obx(
+                  () => Radio(
+                    value: 3,
+                    groupValue: choice.value,
+                    activeColor: Colors.amber,
+                    onChanged: (i) {
+                      choice.value = i;
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: ListTile(
+                title: Text("آخرین پست"),
+                leading: Obx(
+                  () => Radio(
+                    value: 4,
                     groupValue: choice.value,
                     activeColor: Colors.amber,
                     onChanged: (i) {
@@ -250,27 +321,6 @@ class ViewAccount extends StatelessWidget {
                               ids += "," + response[i].toString();
                             }
                           }
-// mohammad_mahdii_bonyadi / mhdmhdmhd82
-                          // if (response["ranked_items"] == null) {
-                          //   for (int i = 0; i < response["num_results"]; i++) {
-                          //     if (i == 0) {
-                          //       ids += response["items"][i]["id"].toString();
-                          //     } else {
-                          //       ids +=
-                          //           "," + response["items"][i]["id"].toString();
-                          //     }
-                          //   }
-                          // } else {
-                          //   for (int i = 0;
-                          //       i < response["ranked_items"].length;
-                          //       i++) {
-                          //     if (i == 0) {
-                          //       ids += response["ranked_items"][i]["id"];
-                          //     } else {
-                          //       ids += "," + response["ranked_items"][i]["id"];
-                          //     }
-                          //   }
-                          // } the algorithm changed!
 
                           print(ids);
                           Get.back();
@@ -299,11 +349,19 @@ class ViewAccount extends StatelessWidget {
                           //   platformChannelSpecifics,
                           //   payload: 'item x',
                           // ); TODO: these lines are for start notification!
-                          Get.snackbar(
-                            "وضعیت",
+
+                          await NotificationService
+                              .flutterLocalNotificationsPlugin
+                              .show(
+                            0,
+                            'وضعیت',
                             "لایک و سیو انجام شد" +
                                 "\nلایک شده: ${res[0].length}\n" +
                                 "لایک نشده: ${res[1].length}",
+                            NotificationDetails(
+                              android: NotificationService
+                                  .androidPlatformChannelSpecifics,
+                            ),
                           );
                         },
                         onCancel: () {

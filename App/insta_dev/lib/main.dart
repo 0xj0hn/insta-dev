@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:insta_dev/notification_services.dart';
 import 'package:insta_dev/page/choose_hashtag.dart';
 import 'package:insta_dev/utils.dart';
 import 'accounter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  NotificationService().init();
+
+  await NotificationService.flutterLocalNotificationsPlugin.show(
+    0,
+    'title',
+    'body',
+    NotificationDetails(
+        android: NotificationService.androidPlatformChannelSpecifics),
+  );
   await Hive.initFlutter();
   await Hive.openBox("accounts");
   // await Controller.flutterLocalNotificationsPlugin.initialize(
@@ -32,7 +44,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(context) {
     final Controller c = Get.put(Controller());
-
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -41,6 +52,8 @@ class Home extends StatelessWidget {
           ),
           actions: [
             PopupMenuButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               icon: Icon(
                 Icons.more_vert,
                 color: Colors.amber,
