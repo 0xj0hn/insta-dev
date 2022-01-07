@@ -9,9 +9,46 @@ app = FastAPI()
 
 #Login
 @app.get('/login/loader/{username},{password}')
-async def HInfo(username: str , password: str) :
-    try :
+
+async def HInfo(username: str , password: str):
+    try:
         res = core.Login(username , password)
+        return res
+    except Exception as e :
+        return e
+
+#Page Followees
+@app.get('/page/followees/{user},{password},{page}')
+async def Followees(user: str,password: str, page: str) :
+    try:
+        res = core.Followees(page,user,password)
+        return res
+    except Exception as e :
+        return e
+
+#First Posts...
+@app.get('/page/followees/first/{page},{user},{password}')
+async def FirstPost(page: str, user: str, password: str):
+    try:
+        res = core.FirstPosts(page,user,password)
+        return res
+    except Exception as e :
+        return e
+
+#Follow Ids...
+@app.get('/page/follow/{ids},{user},{password}')
+async def FollowThem(ids: str, user: str, password: str) :
+    try :
+        res = core.FollowThem(ids,user,password)
+        return res
+    except Exception as e :
+        return e
+
+#Follow Ids...
+@app.get('/page/unfollow/{ids},{user},{password}')
+async def UnFollowThem(ids: str, user: str, password: str) :
+    try :
+        res = core.UnfollowThem(ids,user,password)
         return res
     except Exception as e :
         return e

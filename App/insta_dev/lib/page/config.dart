@@ -10,7 +10,9 @@ class ConfigServerPage extends StatelessWidget {
     var choice = 0.obs;
     var host = "".obs;
     host.value = Hive.box("configs").get("url");
-
+    if (host.value == "") {
+      Hive.box("configs").put("url", "http://localhost:8000");
+    }
     String generateServer(ip, port, protocol) {
       if (port == "") {
       } else {
@@ -35,10 +37,10 @@ class ConfigServerPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: EdgeInsets.all(30),
-            child: Obx(
-              () => Text("سرور تنظیم‌شده: " + host.value),
+          Obx(
+            () => Padding(
+              padding: EdgeInsets.all(30),
+              child: Text("سرور تنظیم‌شده: " + host.value),
             ),
           ),
           Padding(

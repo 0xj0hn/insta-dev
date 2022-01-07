@@ -75,7 +75,7 @@ class RequestFunctions {
         "$hostname/tag/info/$hashtag",
       ),
     );
-
+    print(r.body);
     return r;
   }
 
@@ -86,8 +86,41 @@ class RequestFunctions {
         "$hostname/posts/likesave/$ids,$username,$password",
       ),
     );
+    var res = jsonDecode(r.body);
+    return res;
+  }
 
-    return r;
+  static getFollowings(page, username, password) async {
+    var hostname = Hive.box("configs").get("url");
+    var url = Uri.parse("$hostname/page/followees/$username,$password,$page");
+    var r = await http.get(url);
+    var res = jsonDecode(r.body);
+    return res;
+  }
+
+  static follow(ids, username, password) async {
+    var hostname = Hive.box("configs").get("url");
+    var url = Uri.parse("$hostname/page/follow/$ids,$username,$password");
+    var r = await http.get(url);
+    var res = jsonDecode(r.body);
+    return res;
+  }
+
+  static unfollow(ids, username, password) async {
+    var hostname = Hive.box("configs").get("url");
+    var url = Uri.parse("$hostname/page/unfollow/$ids,$username,$password");
+    var r = await http.get(url);
+    var res = jsonDecode(r.body);
+    return res;
+  }
+
+  static firstPost(page, username, password) async {
+    var hostname = Hive.box("configs").get("url");
+    var url =
+        Uri.parse("$hostname/page/followees/first/$page,$username,$password");
+    var r = await http.get(url);
+    var res = jsonDecode(r.body);
+    return res;
   }
 }
 

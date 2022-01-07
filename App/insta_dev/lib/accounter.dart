@@ -33,6 +33,9 @@ class Accounter extends StatelessWidget {
       } else if (choice == 3) {
         val[0] = "آنفالو";
         val[1] = "اکانت مورد نظر را وارد کنید.";
+      } else if (choice == 4) {
+        val[0] = "آخرین پست";
+        val[1] = "پیج مورد نظر را وارد کنید.";
       }
       return val;
     }
@@ -247,7 +250,7 @@ class Accounter extends StatelessWidget {
                 id: id,
                 password: passwordC.value.text,
                 type: type,
-                hashtag: hashtagCo.value.text,
+                hashtagx: hashtagCo.value.text,
               ),
             );
             //TODO: IM REALLY HERE!
@@ -268,11 +271,191 @@ class ViewAccount extends StatelessWidget {
   String username;
   String password;
   String type;
-  String hashtag;
-  ViewAccount({this.id, this.username, this.password, this.type, this.hashtag});
+  String hashtagx;
+  ViewAccount(
+      {this.id, this.username, this.password, this.type, this.hashtagx});
 
   Controller c = Get.find();
+
   Widget build(BuildContext context) {
+    hashtag() async {
+      var req;
+      Get.snackbar("وضعیت", "لطفا منتظر بمانید");
+      try {
+        req = await RequestFunctions.hashtag_info(
+          hashtag,
+        );
+      } catch (e) {
+        Get.snackbar("وضعیت", "خطا در برقراری ارتباط با سرور");
+      }
+
+      if (req.body == "Internal Server Error") {
+        Get.snackbar("وضعیت", "مشکلی پیش آمده است");
+        return -1;
+      }
+
+      var response = jsonDecode(req.body);
+
+      Get.defaultDialog(
+        title: "هشتگ $hashtag",
+        middleText:
+            "تعداد پست ها: ${response.length.toString()}\nزمان تقریبی: " +
+                (response.length * 4).toString() +
+                " ثانیه",
+        textConfirm: "شروع!",
+        textCancel: "بیخیال!",
+        onConfirm: () async {
+          String ids = "";
+          for (int i = 0; i < response.length; i++) {
+            if (i == 0) {
+              ids += response[i].toString();
+            } else {
+              ids += "," + response[i].toString();
+            }
+          }
+
+          print(ids);
+          Get.back();
+          Get.snackbar(
+            "وضعیت",
+            "منتظر بمانید... \n لطفا خارج نشوید.",
+          );
+
+          final req = await RequestFunctions.likesave(
+            ids,
+            username,
+            password,
+          );
+          var res = jsonDecode(req.body);
+
+          await NotificationService.flutterLocalNotificationsPlugin.show(
+            0,
+            'وضعیت',
+            "لایک و سیو انجام شد" +
+                "\nلایک شده: ${res[0].length}\n" +
+                "لایک نشده: ${res[1].length}",
+            NotificationDetails(
+              android: NotificationService.androidPlatformChannelSpecifics,
+            ),
+          );
+        },
+        onCancel: () {
+          Get.back();
+        },
+      );
+    }
+
+    unfollowAPage() async {
+      Get.snackbar("وضعیت", "منتظر بمانید...");
+
+      var res =
+          await RequestFunctions.getFollowings(hashtagx, username, password);
+      Get.defaultDialog(
+          title: "اکانت $hashtagx",
+          middleText: "آیا می‌خواهید فالوئرهای این پیج را آنفالو کنید؟",
+          textConfirm: "بله",
+          textCancel: "خیر",
+          onConfirm: () async {
+            Get.back();
+            var lst = "";
+            for (int i = 0; i < res[0].length; i++) {
+              if (i == res[0].length - 1) {
+                lst += res[0][i].toString();
+              } else {
+                lst += res[0][i].toString() + ",";
+              }
+            }
+            print(lst);
+            Get.snackbar(
+              "وضعیت",
+              "در حال آنفالو کردن...",
+            );
+            res = await RequestFunctions.unfollow(lst, username, password);
+            print(res);
+            await NotificationService.flutterLocalNotificationsPlugin.show(
+              1,
+              'وضعیت',
+              'آنفالوهای پیج $username انجام شد...',
+              NotificationDetails(
+                  android: NotificationService.androidPlatformChannelSpecifics),
+            );
+          },
+          onCancel: () => Get.back());
+    }
+
+    getFollowingOfAPage() async {
+      Get.snackbar("وضعیت", "منتظر بمانید...");
+
+      var res =
+          await RequestFunctions.getFollowings(hashtagx, username, password);
+      Get.defaultDialog(
+          title: "اکانت $hashtagx",
+          middleText: "آیا می‌خواهید فالوئرهای این پیج را فالو کنید؟",
+          textConfirm: "بله",
+          textCancel: "خیر",
+          onConfirm: () async {
+            Get.back();
+            print(res);
+            var lst = "";
+            for (int i = 0; i < res[0].length; i++) {
+              if (i == res[0].length - 1) {
+                lst += res[0][i].toString();
+              } else {
+                lst += res[0][i].toString() + ",";
+              }
+              print(lst);
+            }
+            print("---\n$lst");
+            Get.snackbar(
+              "وضعیت",
+              "در حال فالو کردن...",
+            );
+            var re = await RequestFunctions.follow(lst, username, password);
+            await NotificationService.flutterLocalNotificationsPlugin.show(
+              2,
+              'وضعیت',
+              'فالوهای پیج $username انجام شد...',
+              NotificationDetails(
+                  android: NotificationService.androidPlatformChannelSpecifics),
+            );
+            Get.snackbar(
+              'وضعیت',
+              "فالو انجام شد.",
+            );
+          },
+          onCancel: () => Get.back());
+      //TODO: HERE :D
+    }
+
+    firstPost() async {
+      Get.snackbar("وضعیت", "منتظر بمانید...");
+      var res;
+      try {
+        res = await RequestFunctions.firstPost(hashtagx, username, password);
+      } catch (e) {
+        Get.snackbar("وضعیت", 'خطا در برقراری ارتباط با سرور...');
+      }
+
+      var lst = "";
+      for (int i = 0; i < res.length; i++) {
+        if (i == res.length - 1) {
+          lst += res[0][i].toString();
+        } else {
+          lst += res[0][i].toString() + ",";
+        }
+      }
+      Get.snackbar("وضعیت", "شروع لایک و سیو آخرین پست‌ها");
+      res = await RequestFunctions.likesave(lst, username, password);
+      print(res);
+      await NotificationService.flutterLocalNotificationsPlugin.show(
+        3,
+        'وضعیت',
+        'لایک و سیو آخرین پست‌های پیج $username انجام شد...',
+        NotificationDetails(
+            android: NotificationService.androidPlatformChannelSpecifics),
+      );
+    }
+
     return Card(
       color: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -286,7 +469,7 @@ class ViewAccount extends StatelessWidget {
                     "\n" +
                     "نوع: $type" +
                     "\n" +
-                    "هشتگ: $hashtag",
+                    "پیج یا هشتگ: $hashtagx",
                 textDirection: TextDirection.rtl,
               ),
               Row(
@@ -298,88 +481,18 @@ class ViewAccount extends StatelessWidget {
                       size: 26,
                     ),
                     tooltip: "اجرای دستور",
-                    onPressed: () async {
-                      var req;
-                      Get.snackbar("وضعیت", "لطفا منتظر بمانید");
-                      try {
-                        req = await RequestFunctions.hashtag_info(
-                          hashtag,
-                        );
-                      } catch (e) {
-                        Get.snackbar("وضعیت", "خطا در برقراری ارتباط با سرور");
+                    onPressed: () {
+                      if (type == "هشتگ") {
+                        hashtag();
+                      } else if (type == "تگ") {
+                      } else if (type == "فالوئر") {
+                        getFollowingOfAPage();
+                      } else if (type == "آنفالو") {
+                        unfollowAPage();
+                      } else if (type == "آخرین پست") {
+                        firstPost();
                       }
-
-                      if (req.body == "Internal Server Error") {
-                        Get.snackbar("وضعیت", "مشکلی پیش آمده است");
-                        return -1;
-                      }
-
-                      List response = jsonDecode(req.body);
-
-                      Get.defaultDialog(
-                        title: "هشتگ $hashtag",
-                        middleText:
-                            "تعداد پست ها: ${response.length.toString()}\nزمان تقریبی: " +
-                                (response.length * 4).toString() +
-                                " ثانیه",
-                        textConfirm: "شروع!",
-                        textCancel: "بیخیال!",
-                        onConfirm: () async {
-                          String ids = "";
-                          for (int i = 0; i < response.length; i++) {
-                            if (i == 0) {
-                              ids += response[i].toString();
-                            } else {
-                              ids += "," + response[i].toString();
-                            }
-                          }
-
-                          print(ids);
-                          Get.back();
-                          Get.snackbar(
-                            "وضعیت",
-                            "منتظر بمانید... \n لطفا خارج نشوید.",
-                          );
-
-                          final req = await RequestFunctions.likesave(
-                            ids,
-                            username,
-                            password,
-                          );
-                          var res = jsonDecode(req.body);
-                          // const androidPlatformChannelSpecifics =
-                          //     AndroidNotificationDetails("1", "test");
-
-                          // const NotificationDetails platformChannelSpecifics =
-                          //     NotificationDetails(
-                          //         android: androidPlatformChannelSpecifics);
-
-                          // await Controller.flutterLocalNotificationsPlugin.show(
-                          //   0,
-                          //   'وضعیت',
-                          //   'اکانت' + username + " انجام شد.",
-                          //   platformChannelSpecifics,
-                          //   payload: 'item x',
-                          // ); TODO: these lines are for start notification!
-
-                          await NotificationService
-                              .flutterLocalNotificationsPlugin
-                              .show(
-                            0,
-                            'وضعیت',
-                            "لایک و سیو انجام شد" +
-                                "\nلایک شده: ${res[0].length}\n" +
-                                "لایک نشده: ${res[1].length}",
-                            NotificationDetails(
-                              android: NotificationService
-                                  .androidPlatformChannelSpecifics,
-                            ),
-                          );
-                        },
-                        onCancel: () {
-                          Get.back();
-                        },
-                      );
+                      ;
                     },
                   ),
                   // IconButton(
