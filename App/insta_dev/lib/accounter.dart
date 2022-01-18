@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:insta_dev/change_information.dart';
 import 'package:insta_dev/notification_services.dart';
 import 'utils.dart';
@@ -329,7 +330,7 @@ class ViewAccount extends StatelessWidget {
           var res = jsonDecode(req.body);
 
           await NotificationService.flutterLocalNotificationsPlugin.show(
-            0,
+            Random().nextInt(1000),
             'وضعیت',
             "لایک و سیو انجام شد" +
                 "\nلایک شده: ${res[0].length}\n" +
@@ -346,9 +347,17 @@ class ViewAccount extends StatelessWidget {
     }
 
     unfollowAPage() async {
-      Get.snackbar("وضعیت", "منتظر بمانید...");
-
-      var res =
+      Get.snackbar(
+        "وضعیت",
+        "در حال گرفتن فالوئینگ‌های پیج شما...",
+      );
+      var usernameFollowings =
+          await RequestFunctions.getFollowings(username, username, password);
+      Get.snackbar(
+        "وضعیت",
+        "در حال گرفتن فالوئینگ‌های پیج تارگت... کمی منتظر بمانید تا فعالیت تمام شود",
+      );
+      var targetFollowings =
           await RequestFunctions.getFollowings(hashtagx, username, password);
       Get.defaultDialog(
           title: "اکانت $hashtagx",
@@ -357,23 +366,49 @@ class ViewAccount extends StatelessWidget {
           textCancel: "خیر",
           onConfirm: () async {
             Get.back();
-            var lst = "";
-            for (int i = 0; i < res[0].length; i++) {
-              if (i == res[0].length - 1) {
-                lst += res[0][i].toString();
+            var first = "";
+
+            for (int i = 0; i < usernameFollowings[0].length; i++) {
+              if (i == usernameFollowings[0].length - 1) {
+                first += usernameFollowings[0][i].toString();
               } else {
-                lst += res[0][i].toString() + ",";
+                first += usernameFollowings[0][i].toString() + ",";
               }
             }
-            print(lst);
-            Get.snackbar(
-              "وضعیت",
-              "در حال آنفالو کردن...",
-            );
+            var second = "";
+            for (int i = 0; i < targetFollowings[0].length; i++) {
+              if (i == targetFollowings[0].length - 1) {
+                second += targetFollowings[0][i].toString();
+              } else {
+                second += targetFollowings[0][i].toString() + ",";
+              }
+            }
+            var lst = "";
+            var res = await RequestFunctions.math(first, second);
+            try {
+              for (int i = 0; i < res.length; i++) {
+                if (i == res.length - 1) {
+                  lst += res[i].toString();
+                } else {
+                  lst += res[i].toString() + ",";
+                }
+                print(lst);
+              }
+              Get.snackbar(
+                "وضعیت",
+                "عملیات همگام‌سازی با موفقیت انجام شد...\nدر حال آنفالو...",
+              );
+            } catch (e) {
+              Get.snackbar(
+                "وضعیت",
+                "احتمالا مشکلی پیش آمده است(اعم از بن شدن اکانت توسط اینستاگرام)",
+              );
+            }
+
             res = await RequestFunctions.unfollow(lst, username, password);
             print(res);
             await NotificationService.flutterLocalNotificationsPlugin.show(
-              1,
+              Random().nextInt(1000),
               'وضعیت',
               'آنفالوهای پیج $username انجام شد...',
               NotificationDetails(
@@ -412,7 +447,7 @@ class ViewAccount extends StatelessWidget {
             );
             var re = await RequestFunctions.follow(lst, username, password);
             await NotificationService.flutterLocalNotificationsPlugin.show(
-              2,
+              Random().nextInt(1000),
               'وضعیت',
               'فالوهای پیج $username انجام شد...',
               NotificationDetails(
@@ -448,7 +483,7 @@ class ViewAccount extends StatelessWidget {
       res = await RequestFunctions.likesave(lst, username, password);
       print(res);
       await NotificationService.flutterLocalNotificationsPlugin.show(
-        3,
+        Random().nextInt(1000),
         'وضعیت',
         'لایک و سیو آخرین پست‌های پیج $username انجام شد...',
         NotificationDetails(

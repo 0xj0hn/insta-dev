@@ -7,6 +7,17 @@ app = FastAPI()
 
 #Lets Code...
 
+#Math
+@app.get('/math/difference/{first}!{second}')
+
+async def Math(first: str , second: str): 
+    try: 
+        res = core.math(first, second)   
+        return res 
+    except Exception as e : 
+        return e
+
+
 #Login
 @app.get('/login/loader/{username},{password}')
 

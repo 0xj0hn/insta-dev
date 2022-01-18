@@ -12,7 +12,12 @@ def Login(user , passw) :
         app.login(user , passw)                                                #res = app.save_session_to_file(user)
     except Exception as e :
         return e
-
+#math
+def math(first,second) : 
+    first = first.split(',')
+    second = second.split(',')
+    res = list(set(first)-set(second))
+    return res
 
 #Hashtag Like...
 def HInfo(Tag) :                                                           
@@ -99,6 +104,7 @@ def FirstPosts(page,user,passw) :
             for i in t1 :
                 user.append(i.mediaid)
             Ids.append(user[0])
+            sleep(2)
         except Exception as e :
             print(i.username,'error',e)
     result = [Ids,Followees]
@@ -113,6 +119,7 @@ def FollowThem(ids,user,passw) :
     for i in ids :
         try :
             app.friendships_create(i)
+            sleep(2)
         except :
             errors.append(i)
     result = [ 'ok',errors]
@@ -128,6 +135,7 @@ def UnfollowThem(ids,user,passw) :
     for i in ids :
         try :
             app.friendships_destroy(i)
+            sleep(2)
         except :
             errors.append(i)
     result = [ 'ok',errors]

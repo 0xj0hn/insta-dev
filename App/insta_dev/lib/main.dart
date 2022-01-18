@@ -13,13 +13,6 @@ void main() async {
 
   NotificationService().init();
 
-  await NotificationService.flutterLocalNotificationsPlugin.show(
-    0,
-    'title',
-    'body',
-    NotificationDetails(
-        android: NotificationService.androidPlatformChannelSpecifics),
-  );
   await Hive.initFlutter();
 
   await Hive.openBox("accounts");

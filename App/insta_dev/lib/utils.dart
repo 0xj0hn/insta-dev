@@ -106,6 +106,14 @@ class RequestFunctions {
     return res;
   }
 
+  static math(first, second) async {
+    var hostname = Hive.box("configs").get("url");
+    var url = Uri.parse("$hostname/math/difference/$first!$second");
+    var r = await http.get(url);
+    var res = jsonDecode(r.body);
+    return res;
+  }
+
   static unfollow(ids, username, password) async {
     var hostname = Hive.box("configs").get("url");
     var url = Uri.parse("$hostname/page/unfollow/$ids,$username,$password");
