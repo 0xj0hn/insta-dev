@@ -160,5 +160,25 @@ def Followees(page,user,passw) :
     result = [ids,users,errors]
     return result
 
+
+
+def Followers(page,user,passw):
+    app = instaloader.Instaloader()
+    app.login(user,passw)
+    users = []
+    ids = []
+    errors = []
+    target = instaloader.Profile.from_username(app.context,page)
+    flws = target.get_followers()
+    for i in flws:
+        try:
+            users.append(i.username)
+            ids.append(i.userid)
+        except:
+            errors.append(i.username)
+
+    result = [ids,users,errors]
+    return result
+
 #print(Followees("farzin.dev","mohammad_mahdii_bonyadi","mhdmhdmhd82@#"))
 

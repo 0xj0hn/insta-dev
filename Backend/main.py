@@ -37,6 +37,16 @@ async def Followees(user: str,password: str, page: str) :
     except Exception as e :
         return e
 
+
+#Get Followers
+@app.get("/page/followers/{user},{password},{page}")
+async def Followers(user: str, password: str, page: str):
+    try:
+        res = core.Followers(page, user,password)
+        return res
+    except Exception as e:
+        return e
+
 #First Posts...
 @app.get('/page/followees/first/{page},{user},{password}')
 async def FirstPost(page: str, user: str, password: str):
